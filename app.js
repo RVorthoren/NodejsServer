@@ -1,19 +1,10 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var users = require('./users');
+
 var app = express();
 
-var users = {
-  0: {
-    name: 'Remco Vorthoren',
-    age: 20,
-    male: true
-  },
-  1: {
-    name: 'Mevrouw Vorthoren',
-    age: 20,
-    male: false
-  }
-};
+
 
 app.use(bodyParser.urlencoded({ extended:true }));
 app.use(bodyParser.json());
@@ -29,35 +20,36 @@ app.get('/', function (req, res) {
 });
 
 app.get('/users', function (req, res) {
-  res.json(users);
+  const response = users.getUsers();
+
+  res.status(response.status);
+  res.json(response.payload);
 });
 
 app.get('/users/:id', function(req, res) {
-  var user = users[req.params.id];
-  res.status(200);
-  res.json(user);
+  var userId = req.params.id;
+  var response = users.getUser(userId);
+
+  res.status(response.status);
+  res.json(response.payload);
 });
 
 app.post('/newuser', function(req, res) {
-  var info = req.body;
+  var data = req.body;
+  const response = users.makeUser(data.name, data.age, data.isMale);
 
-  var response = {'code':201};
+  res.status(response.status);
+  res.json(response.payload);
 
-  if (!info || !info.name) response.code = 400;
-  else {
-    users[Object.keys(users).length] = info;
-  }
-  res.json(response);
 });
 
 app.put('/users/:id', function (req, res) {
   var userId = req.params.id;
-  var info = req.body;
-  var user = users[userId];
-  Object.assign(user,info);
-  /*Because of the reference of the user object, the user is also updated in the users object*/
+  var data = req.body;
+  const response = users.updateUser(userId, data);
 
-  res.json({'code': 201});
+  res.status(response.status);
+  res.json(response.payload);
 });
 
 var port = process.env.PORT || 3000;
