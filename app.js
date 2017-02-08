@@ -3,11 +3,15 @@ var bodyParser = require('body-parser');
 var app = express();
 
 var users = {
-  1: {
-    id: '1'
+  0: {
+    name: 'Remco Vorthoren',
+    age: 20,
+    male: true
   },
-  2: {
-    id: '2'
+  1: {
+    name: 'Mevrouw Vorthoren',
+    age: 20,
+    male: false
   }
 };
 
@@ -32,6 +36,28 @@ app.get('/users/:id', function(req, res) {
   var user = users[req.params.id];
   res.status(200);
   res.json(user);
+});
+
+app.post('/newuser', function(req, res) {
+  var info = req.body;
+
+  var response = {'code':201};
+
+  if (!info || !info.name) response.code = 400;
+  else {
+    users[Object.keys(users).length] = info;
+  }
+  res.json(response);
+});
+
+app.put('/users/:id', function (req, res) {
+  var userId = req.params.id;
+  var info = req.body;
+  var user = users[userId];
+  Object.assign(user,info);
+  /*Because of the reference of the user object, the user is also updated in the users object*/
+
+  res.json({'code': 201});
 });
 
 var port = process.env.PORT || 3000;
