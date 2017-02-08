@@ -1,0 +1,24 @@
+{
+  "name": "nodejs_sql_server",
+  "version": "1.0.0",
+  "description": "A node js server with a sql database",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RVorthoren/NodejsServer.git"
+  },
+  "author": "Remco Vorthoren",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RVorthoren/NodejsServer/issues"
+  },
+  "homepage": "https://github.com/RVorthoren/NodejsServer#readme",
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "express": "^4.14.1",
+    "moment": "^2.17.1",
+    "nodemon": "^1.11.0"
+  }
+}
